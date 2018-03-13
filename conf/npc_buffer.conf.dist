@@ -20,9 +20,9 @@ Buff.CureRes = 1
 # 6. Arcane Intellect (36880)
 # ----------------------------------------------
 # Fun Stuff
-# 48612 (Dalron the Controller)
+# Put this spell if you want to kill your players : 48612 (Dalron the Controller)
 
-Buff.ID1 = 48612
+Buff.ID1 = 
 Buff.ID2 = 43223
 Buff.ID3 = 48469
 Buff.ID4 = 48074
