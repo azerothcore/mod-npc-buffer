@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 # Buffer NPC #
 
@@ -59,6 +59,7 @@ Creates a one-click Buff NPC with emotes.
 
 #include "Config.h"
 #include "ScriptPCH.h"
+#include "Configuration/Config.h"
 
 class BufferAnnounce : public PlayerScript
 {
@@ -102,12 +103,12 @@ public:
         }
 
         // Apply Buffs
-        player->CastSpell(player, Buff1, true);
-        player->CastSpell(player, Buff2, true);
-        player->CastSpell(player, Buff3, true);
-        player->CastSpell(player, Buff4, true);
-        player->CastSpell(player, Buff5, true);
-        player->CastSpell(player, Buff6, true);
+        creature->CastSpell(player, Buff1, true);
+        creature->CastSpell(player, Buff2, true);
+        creature->CastSpell(player, Buff3, true);
+        creature->CastSpell(player, Buff4, true);
+        creature->CastSpell(player, Buff5, true);
+        creature->CastSpell(player, Buff6, true);
 
         // NPC Emote
         creature->HandleEmoteCommand(EMOTE_ONESHOT_FLEX);
@@ -118,8 +119,32 @@ public:
     }
 };
 
+class npc_buffer : public WorldScript
+{
+public:
+    npc_buffer() : WorldScript("npc_buffer") { }
+
+    void OnBeforeConfigLoad(bool reload) override
+    {
+        if (!reload) {
+            std::string conf_path = _CONF_DIR;
+            std::string cfg_file = conf_path + "/npc_buffer.conf";
+
+#ifdef WIN32
+            cfg_file = "npc_buffer.conf";
+#endif
+            std::string cfg_def_file = cfg_file + ".dist";
+
+            sConfigMgr->LoadMore(cfg_def_file.c_str());
+
+            sConfigMgr->LoadMore(cfg_file.c_str());
+        }
+    }
+};
+
 void AddNPCBufferScripts()
 {
+    new npc_buffer();
     new BufferAnnounce();
     new buff_npc();
 }
