@@ -103,12 +103,12 @@ public:
         }
 
         // Apply Buffs
-        player->CastSpell(player, Buff1, true);
-        player->CastSpell(player, Buff2, true);
-        player->CastSpell(player, Buff3, true);
-        player->CastSpell(player, Buff4, true);
-        player->CastSpell(player, Buff5, true);
-        player->CastSpell(player, Buff6, true);
+        creature->CastSpell(player, Buff1, true);
+        creature->CastSpell(player, Buff2, true);
+        creature->CastSpell(player, Buff3, true);
+        creature->CastSpell(player, Buff4, true);
+        creature->CastSpell(player, Buff5, true);
+        creature->CastSpell(player, Buff6, true);
 
         // NPC Emote
         creature->HandleEmoteCommand(EMOTE_ONESHOT_FLEX);
