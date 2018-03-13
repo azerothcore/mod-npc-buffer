@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 # Buffer NPC #
 
@@ -59,6 +59,7 @@ Creates a one-click Buff NPC with emotes.
 
 #include "Config.h"
 #include "ScriptPCH.h"
+#include "Configuration/Config.h"
 
 class BufferAnnounce : public PlayerScript
 {
@@ -118,8 +119,32 @@ public:
     }
 };
 
+class npc_buffer : public WorldScript
+{
+public:
+    npc_buffer() : WorldScript("npc_buffer") { }
+
+    void OnBeforeConfigLoad(bool reload) override
+    {
+        if (!reload) {
+            std::string conf_path = _CONF_DIR;
+            std::string cfg_file = conf_path + "/npc_buffer.conf";
+
+#ifdef WIN32
+            cfg_file = "npc_buffer.conf";
+#endif
+            std::string cfg_def_file = cfg_file + ".dist";
+
+            sConfigMgr->LoadMore(cfg_def_file.c_str());
+
+            sConfigMgr->LoadMore(cfg_file.c_str());
+        }
+    }
+};
+
 void AddNPCBufferScripts()
 {
+    new npc_buffer();
     new BufferAnnounce();
     new buff_npc();
 }
