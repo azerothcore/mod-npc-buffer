@@ -96,7 +96,7 @@ public:
         }
 
         // Remove Ressurection Sickness?
-        if (sConfigMgr->GetBoolDefault("Buff.CureRes", 0))
+        if (sConfigMgr->GetBoolDefault("Buff.CureRes", true))
         {
             // Remove Debuffs
             player->RemoveAura(15007, true);	// Cure Ressurection Sickness
