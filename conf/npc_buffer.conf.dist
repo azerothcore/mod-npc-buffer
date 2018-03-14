@@ -22,9 +22,4 @@ Buff.CureRes = 1
 # Fun Stuff
 # Put this spell if you want to kill your players : 48612 (Dalron the Controller)
 
-Buff.ID1 = 
-Buff.ID2 = 43223
-Buff.ID3 = 48469
-Buff.ID4 = 48074
-Buff.ID5 = 48170
-Buff.ID6 = 36880
+Buff.Spells = "43223;48469;48074;48170;36880;"
