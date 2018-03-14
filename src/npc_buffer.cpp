@@ -59,7 +59,7 @@ Creates a one-click Buff NPC with emotes.
 
 #include "Config.h"
 #include "ScriptPCH.h"
-
+#include "Configuration/Config.h"
 
 class BufferAnnounce : public PlayerScript
 {
@@ -117,7 +117,6 @@ public:
     }
 };
 
-
 class npc_buffer : public WorldScript
 {
 public:
@@ -140,7 +139,6 @@ public:
         }
     }
 };
-
 
 void AddNPCBufferScripts()
 {
