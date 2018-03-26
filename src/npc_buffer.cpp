@@ -1,4 +1,4 @@
-﻿/*
+/*
 
 # Buffer NPC #
 
@@ -87,13 +87,13 @@ public:
 
     bool OnGossipSelect(Player * player, Creature * creature, uint32 /*uiSender*/, uint32 uiAction)
     {
-        // Get spells from config
-        const uint32 Buff1 = sConfigMgr->GetIntDefault("Buff.ID1", NULL); // Prayer of Fortitude
-        const uint32 Buff2 = sConfigMgr->GetIntDefault("Buff.ID2", NULL); // Greater Blessing of Kings
-        const uint32 Buff3 = sConfigMgr->GetIntDefault("Buff.ID3", NULL); // Mark of the Wild
-        const uint32 Buff4 = sConfigMgr->GetIntDefault("Buff.ID4", NULL); // Prayer of Spirit
-        const uint32 Buff5 = sConfigMgr->GetIntDefault("Buff.ID5", NULL); // Prayer of Shadow Protection
-        const uint32 Buff6 = sConfigMgr->GetIntDefault("Buff.ID6", NULL); // Arcane Intellect
+        std::vector<uint32> vecBuffs;
+        std::stringstream ss(sConfigMgr->GetStringDefault("Buff.Spells", ""));
+
+        for (std::string buff; std::getline(ss, buff, ';');)
+        {
+            vecBuffs.push_back(stoul(buff));
+        }
 
         // Remove Ressurection Sickness?
         if (sConfigMgr->GetBoolDefault("Buff.CureRes", true))
@@ -103,12 +103,10 @@ public:
         }
 
         // Apply Buffs
-        creature->CastSpell(player, Buff1, true);
-        creature->CastSpell(player, Buff2, true);
-        creature->CastSpell(player, Buff3, true);
-        creature->CastSpell(player, Buff4, true);
-        creature->CastSpell(player, Buff5, true);
-        creature->CastSpell(player, Buff6, true);
+
+        for (std::vector<uint32>::const_iterator itr = vecBuffs.begin(); itr != vecBuffs.end(); itr++)
+            player->CastSpell(player, *itr, true);
+        
 
         // NPC Emote
         creature->HandleEmoteCommand(EMOTE_ONESHOT_FLEX);
