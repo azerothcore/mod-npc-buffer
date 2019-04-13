@@ -57,8 +57,8 @@ Creates a one-click Buff NPC with emotes.
 
 */
 
-#include "Config.h"
-#include "ScriptPCH.h"
+#include "Player.h"
+#include "ScriptMgr.h"
 #include "Configuration/Config.h"
 
 class BufferAnnounce : public PlayerScript
