@@ -1,18 +1,18 @@
-USE world;
-
--- ######################################################--
---	BUFFER NPC - 601016
--- ######################################################--
+-- --------------------------------------------------------------------------------------
+--	BUFFER - 601016
+-- --------------------------------------------------------------------------------------
 SET
 @Entry 		:= 601016,
+-- Alliance Version
 -- @Model 		:= 4309, -- Human Male Tuxedo
 -- @Name 		:= "Bruce Buffer",
 -- @Title 		:= "Ph.D.",
+-- Horde Version
 @Model 		:= 14612, -- Tauren Warmaster
-@Name 		:= "Sergeant Hasselhoof",
+@Name 		:= "Buffmaster Hasselhoof",
 @Title 		:= "",
 @Icon 		:= "Speak",
-@GossipMenu := 4110,
+@GossipMenu := 0,
 @MinLevel 	:= 80,
 @MaxLevel 	:= 80,
 @Faction 	:= 35,
