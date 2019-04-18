@@ -30,6 +30,7 @@ the player using configurable emote options.
 
 ### Version
 ------------------------------------------------------------------------------------------------------------------
+- v2019.04.17 - Fix Cure Resurrection Sickness, works now! Courtesy of Poszer and Milestorme
 - v2019.04.15 - Ported to AzerothCore by gtao725 (https://github.com/gtao725/)
 - v2019.02.13 - Added phrases/emotes, config options, updated AI
 - v2017.08.06 - Removed dialogue options (Just buffs player on click)
@@ -200,7 +201,7 @@ public:
         // Cure Resurrection Sickness
         if (BuffCureRes && player->HasAura(15007))
         {
-            player->RemoveAura(15007, true);
+            player->RemoveAura(15007);
             std::ostringstream res;
             res << "The aura of death has been lifted from you " << PlayerName << ". Watch yourself out there!";
             creature->MonsterWhisper(res.str().c_str(), player);
