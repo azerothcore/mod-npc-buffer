@@ -151,7 +151,7 @@ public:
         // Choose and speak a random phrase to the player
         // Phrases are stored in the config file
         std::string whisper = "";
-        uint32 WhisperNum = urand(1, BuffNumWhispers); // How many phrases does the NPC speak? 
+        uint32 WhisperNum = urand(1, BuffNumWhispers); // How many phrases does the NPC speak?
         whisper = "BF.W" + std::to_string(WhisperNum);
 
         // Sanitize
@@ -170,7 +170,7 @@ public:
         // Choose and speak a random phrase to the player
         // Phrases are stored in the config file
         std::string phrase = "";
-        uint32 PhraseNum = urand(1, BuffNumPhrases); // How many phrases does the NPC speak? 
+        uint32 PhraseNum = urand(1, BuffNumPhrases); // How many phrases does the NPC speak?
         phrase = "BF.P" + std::to_string(PhraseNum);
 
         // Sanitize
@@ -183,7 +183,7 @@ public:
         return randMsg.c_str();
     }
 
-    bool OnGossipSelect(Player *player, Creature *creature, uint32 /*uiSender*/, uint32 uiAction)
+    bool OnGossipSelect(Player *player, Creature *creature, uint32 /*uiSender*/, uint32 /* uiAction */)
     {
         // Who are we dealing with?
         string CreatureWhisper = "Init";
