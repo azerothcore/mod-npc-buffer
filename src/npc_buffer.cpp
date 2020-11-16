@@ -65,6 +65,7 @@ This code and content is released under the [GNU AGPL v3](https://github.com/aze
 
 #include "Config.h"
 #include "ScriptMgr.h"
+#include "Chat.h"
 
 bool BFAnnounceModule;
 bool BuffByLevel;
