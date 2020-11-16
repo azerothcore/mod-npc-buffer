@@ -1,4 +1,6 @@
-# Buffer NPC
+# ![logo](https://raw.githubusercontent.com/azerothcore/azerothcore.github.io/master/images/logo-github.png) AzerothCore
+## Buffer NPC
+- Latest build status with azerothcore: [![Build Status](https://github.com/azerothcore/mod-npc-buffer/workflows/core-build/badge.svg?branch=master&event=push)](https://github.com/azerothcore/mod-npc-buffer)
 
 _This module was created for [StygianCore](https://rebrand.ly/stygiancoreproject). A World of Warcraft 3.3.5a Solo/LAN repack by StygianTheBest | [GitHub](https://rebrand.ly/stygiangithub) | [Website](https://rebrand.ly/stygianthebest))_
 _This module has now being ported to AzerothCore by gtao725 (https://github.com/gtao725/)._
