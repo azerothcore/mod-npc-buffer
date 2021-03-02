@@ -70,48 +70,36 @@ This code and content is released under the [GNU AGPL v3](https://github.com/aze
 #include "ScriptedCreature.h"
 #include "ScriptedGossip.h"
 
-bool BFAnnounceModule;
-bool BuffByLevel;
-bool BuffCureRes;
-uint32 BuffNumPhrases;
-uint32 BuffNumWhispers;
-uint32 BuffMessageTimer;
-uint32 BuffEmoteSpell;
-uint32 BuffEmoteCommand;
+static bool BFAnnounceModule;
+static bool BuffByLevel;
+static bool BuffCureRes;
+static uint32 BuffNumPhrases;
+static uint32 BuffNumWhispers;
+static uint32 BuffMessageTimer;
+static uint32 BuffEmoteSpell;
+static uint32 BuffEmoteCommand;
 
 class BufferConfig : public WorldScript
 {
 public:
     BufferConfig() : WorldScript("BufferConfig_conf") { }
 
-    void OnBeforeConfigLoad(bool reload) override
-    {
-        if (!reload) {
-            std::string conf_path = _CONF_DIR;
-            std::string cfg_file = conf_path + "/npc_buffer.conf";
-#ifdef WIN32
-            cfg_file = "npc_buffer.conf";
-#endif
-            std::string cfg_def_file = cfg_file + ".dist";
-            sConfigMgr->LoadMore(cfg_def_file.c_str());
-            sConfigMgr->LoadMore(cfg_file.c_str());
+    void OnBeforeConfigLoad(bool reload) override {
+        BFAnnounceModule = sConfigMgr->GetBoolDefault("Buff.Announce", 1);
+        BuffByLevel = sConfigMgr->GetBoolDefault("Buff.ByLevel", 1);
+        BuffCureRes = sConfigMgr->GetBoolDefault("Buff.CureRes", 1);
+        BuffNumPhrases = sConfigMgr->GetIntDefault("Buff.NumPhrases", 3);
+        BuffNumWhispers = sConfigMgr->GetIntDefault("Buff.NumWhispers", 3);
+        BuffMessageTimer = sConfigMgr->GetIntDefault("Buff.MessageTimer", 60000);
+        BuffEmoteSpell = sConfigMgr->GetIntDefault("Buff.EmoteSpell", 44940);
+        BuffEmoteCommand = sConfigMgr->GetIntDefault("Buff.EmoteCommand", 3);
 
-            BFAnnounceModule = sConfigMgr->GetBoolDefault("Buff.Announce", 1);
-            BuffByLevel = sConfigMgr->GetBoolDefault("Buff.ByLevel", 1);
-            BuffCureRes = sConfigMgr->GetBoolDefault("Buff.CureRes", 1);
-            BuffNumPhrases = sConfigMgr->GetIntDefault("Buff.NumPhrases", 3);
-            BuffNumWhispers = sConfigMgr->GetIntDefault("Buff.NumWhispers", 3);
-            BuffMessageTimer = sConfigMgr->GetIntDefault("Buff.MessageTimer", 60000);
-            BuffEmoteSpell = sConfigMgr->GetIntDefault("Buff.EmoteSpell", 44940);
-            BuffEmoteCommand = sConfigMgr->GetIntDefault("Buff.EmoteCommand", 3);
-
-            // Enforce Min/Max Time
-            if (BuffMessageTimer != 0)
+        // Enforce Min/Max Time
+        if (BuffMessageTimer != 0)
+        {
+            if (BuffMessageTimer < 60000 || BuffMessageTimer > 300000)
             {
-                if (BuffMessageTimer < 60000 || BuffMessageTimer > 300000)
-                {
-                    BuffMessageTimer = 60000;
-                }
+                BuffMessageTimer = 60000;
             }
         }
     }
