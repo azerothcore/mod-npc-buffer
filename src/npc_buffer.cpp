@@ -138,7 +138,7 @@ public:
         return true;
     }
 
-    static string PickWhisper(string Name)
+    static std::string PickWhisper(std::string Name)
     {
         // Choose and speak a random phrase to the player
         // Phrases are stored in the config file
@@ -157,7 +157,7 @@ public:
         return randMsg.c_str();
     }
 
-    static string PickPhrase()
+    static std::string PickPhrase()
     {
         // Choose and speak a random phrase to the player
         // Phrases are stored in the config file
@@ -178,8 +178,8 @@ public:
     bool OnGossipSelect(Player *player, Creature *creature, uint32 /*uiSender*/, uint32 /* uiAction */)
     {
         // Who are we dealing with?
-        string CreatureWhisper = "Init";
-        string PlayerName = player->GetName();
+        std::string CreatureWhisper = "Init";
+        std::string PlayerName = player->GetName();
         uint32 PlayerLevel = player->getLevel();
 
         // Store Buff IDs
@@ -301,7 +301,7 @@ public:
 
         // Emote and Close
         creature->HandleEmoteCommand(EMOTE_ONESHOT_FLEX);
-        player->CLOSE_GOSSIP_MENU();
+        CloseGossipMenuFor(player);
         return true;
     }
 
