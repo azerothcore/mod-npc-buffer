@@ -196,7 +196,7 @@ public:
             player->RemoveAura(15007);
             std::ostringstream res;
             res << "The aura of death has been lifted from you " << PlayerName << ". Watch yourself out there!";
-            creature->MonsterWhisper(res.str().c_str(), player);
+            creature->Whisper(res.str().c_str(), LANG_UNIVERSAL, player);
         }
 
         // Are we buffing based on level
@@ -297,7 +297,7 @@ public:
 
         // Choose and speak a random phrase to the player
         // Phrases are stored in the config file
-        creature->MonsterWhisper(PickWhisper(PlayerName).c_str(), player);
+        creature->Whisper(PickWhisper(PlayerName).c_str(), LANG_UNIVERSAL, player);
 
         // Emote and Close
         creature->HandleEmoteCommand(EMOTE_ONESHOT_FLEX);
@@ -324,7 +324,7 @@ public:
             if (MessageTimer <= diff)
             {
                 std::string Message = PickPhrase();
-                me->MonsterSay(Message.c_str(), LANG_UNIVERSAL, NULL);
+                me->Say(Message.c_str(), LANG_UNIVERSAL, NULL);
 
                 // Use gesture?
                 if (BuffEmoteCommand != 0)
