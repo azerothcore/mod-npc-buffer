@@ -297,7 +297,11 @@ public:
 
         // Choose and speak a random phrase to the player
         // Phrases are stored in the config file
-        creature->Whisper(PickWhisper(PlayerName).c_str(), LANG_UNIVERSAL, player);
+        
+        if (BuffNumWhispers > 0)
+        {
+            creature->Whisper(PickWhisper(PlayerName).c_str(), LANG_UNIVERSAL, player);
+        }
 
         // Emote and Close
         creature->HandleEmoteCommand(EMOTE_ONESHOT_FLEX);
@@ -310,37 +314,45 @@ public:
     {
         NPC_PassiveAI(Creature * creature) : ScriptedAI(creature) { }
 
-        uint32 MessageTimer;
+        uint32 MessageTimer = 0;
 
         // Called once when client is loaded
         void Reset()
         {
-            MessageTimer = urand(BuffMessageTimer, 300000); // 1-5 minutes
+            if (BuffMessageTimer != 0) {
+                MessageTimer = urand(BuffMessageTimer, 300000); // 1-5 minutes
+            }
         }
 
         // Called at World update tick
         void UpdateAI(const uint32 diff)
         {
-            if (MessageTimer <= diff)
+            if (BuffMessageTimer != 0)
             {
-                std::string Message = PickPhrase();
-                me->Say(Message.c_str(), LANG_UNIVERSAL, NULL);
-
-                // Use gesture?
-                if (BuffEmoteCommand != 0)
+                if (MessageTimer <= diff)
                 {
-                    me->HandleEmoteCommand(BuffEmoteCommand);
+                    if (BuffNumPhrases > 0)
+                    {
+                        std::string Message = PickPhrase();
+                        me->Say(Message.c_str(), LANG_UNIVERSAL, NULL);
+                    }
+    
+                    // Use gesture?
+                    if (BuffEmoteCommand != 0)
+                    {
+                        me->HandleEmoteCommand(BuffEmoteCommand);
+                    }
+    
+                    // Alert players?
+                    if (BuffEmoteSpell != 0)
+                    {
+                        me->CastSpell(me, BuffEmoteSpell);
+                    }
+    
+                    MessageTimer = urand(BuffMessageTimer, 300000);
                 }
-
-                // Alert players?
-                if (BuffEmoteSpell != 0)
-                {
-                    me->CastSpell(me, BuffEmoteSpell);
-                }
-
-                MessageTimer = urand(BuffMessageTimer, 300000);
+                else { MessageTimer -= diff; }
             }
-            else { MessageTimer -= diff; }
         }
     };
 
