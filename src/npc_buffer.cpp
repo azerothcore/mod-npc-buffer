@@ -70,6 +70,7 @@ This code and content is released under the [GNU AGPL v3](https://github.com/aze
 #include "ScriptedCreature.h"
 #include "ScriptedGossip.h"
 
+static bool BFEnableModule;
 static bool BFAnnounceModule;
 static bool BuffByLevel;
 static bool BuffCureRes;
@@ -85,14 +86,15 @@ public:
     BufferConfig() : WorldScript("BufferConfig_conf") { }
 
     void OnBeforeConfigLoad(bool /*reload*/) override {
-        BFAnnounceModule = sConfigMgr->GetBoolDefault("Buff.Announce", 1);
-        BuffByLevel = sConfigMgr->GetBoolDefault("Buff.ByLevel", 1);
-        BuffCureRes = sConfigMgr->GetBoolDefault("Buff.CureRes", 1);
-        BuffNumPhrases = sConfigMgr->GetIntDefault("Buff.NumPhrases", 3);
-        BuffNumWhispers = sConfigMgr->GetIntDefault("Buff.NumWhispers", 3);
-        BuffMessageTimer = sConfigMgr->GetIntDefault("Buff.MessageTimer", 60000);
-        BuffEmoteSpell = sConfigMgr->GetIntDefault("Buff.EmoteSpell", 44940);
-        BuffEmoteCommand = sConfigMgr->GetIntDefault("Buff.EmoteCommand", 3);
+        BFEnableModule = sConfigMgr->GetOption<bool>("Buff.Enable", 1);
+        BFAnnounceModule = sConfigMgr->GetOption<bool>("Buff.Announce", 1);
+        BuffByLevel = sConfigMgr->GetOption<bool>("Buff.ByLevel", 1);
+        BuffCureRes = sConfigMgr->GetOption<bool>("Buff.CureRes", 1);
+        BuffNumPhrases = sConfigMgr->GetOption<uint32>("Buff.NumPhrases", 3);
+        BuffNumWhispers = sConfigMgr->GetOption<uint32>("Buff.NumWhispers", 3);
+        BuffMessageTimer = sConfigMgr->GetOption<uint32>("Buff.MessageTimer", 60000);
+        BuffEmoteSpell = sConfigMgr->GetOption<uint32>("Buff.EmoteSpell", 44940);
+        BuffEmoteCommand = sConfigMgr->GetOption<uint32>("Buff.EmoteCommand", 3);
 
         // Enforce Min/Max Time
         if (BuffMessageTimer != 0)
@@ -115,7 +117,7 @@ public:
     void OnLogin(Player* player)
     {
         // Announce Module
-        if (BFAnnounceModule)
+        if (BFEnableModule && BFAnnounceModule)
         {
             ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00BufferNPC |rmodule.");
         }
@@ -177,6 +179,11 @@ public:
 
     bool OnGossipSelect(Player *player, Creature *creature, uint32 /*uiSender*/, uint32 /* uiAction */)
     {
+        if (!BFEnableModule)
+        {
+            return false;
+        }
+    
         // Who are we dealing with?
         std::string CreatureWhisper = "Init";
         std::string PlayerName = player->GetName();
@@ -327,7 +334,7 @@ public:
         // Called at World update tick
         void UpdateAI(const uint32 diff)
         {
-            if (BuffMessageTimer != 0)
+            if (BFEnableModule && BuffMessageTimer != 0)
             {
                 if (MessageTimer <= diff)
                 {
