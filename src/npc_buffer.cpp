@@ -82,17 +82,18 @@ static uint32 BuffEmoteCommand;
 class BufferConfig : public WorldScript
 {
 public:
-    BufferConfig() : WorldScript("BufferConfig_conf") { }
+    BufferConfig() : WorldScript("BufferConfig_conf") {}
 
-    void OnBeforeConfigLoad(bool /*reload*/) override {
-        BFAnnounceModule = sConfigMgr->GetBoolDefault("Buff.Announce", 1);
-        BuffByLevel = sConfigMgr->GetBoolDefault("Buff.ByLevel", 1);
-        BuffCureRes = sConfigMgr->GetBoolDefault("Buff.CureRes", 1);
-        BuffNumPhrases = sConfigMgr->GetIntDefault("Buff.NumPhrases", 3);
-        BuffNumWhispers = sConfigMgr->GetIntDefault("Buff.NumWhispers", 3);
-        BuffMessageTimer = sConfigMgr->GetIntDefault("Buff.MessageTimer", 60000);
-        BuffEmoteSpell = sConfigMgr->GetIntDefault("Buff.EmoteSpell", 44940);
-        BuffEmoteCommand = sConfigMgr->GetIntDefault("Buff.EmoteCommand", 3);
+    void OnBeforeConfigLoad(bool /*reload*/) override
+    {
+        BFAnnounceModule = sConfigMgr->GetOption<bool>("Buff.Announce", 1);
+        BuffByLevel = sConfigMgr->GetOption<bool>("Buff.ByLevel", 1);
+        BuffCureRes = sConfigMgr->GetOption<bool>("Buff.CureRes", 1);
+        BuffNumPhrases = sConfigMgr->GetOption<int>("Buff.NumPhrases", 3);
+        BuffNumWhispers = sConfigMgr->GetOption<int>("Buff.NumWhispers", 3);
+        BuffMessageTimer = sConfigMgr->GetOption<int>("Buff.MessageTimer", 60000);
+        BuffEmoteSpell = sConfigMgr->GetOption<int>("Buff.EmoteSpell", 44940);
+        BuffEmoteCommand = sConfigMgr->GetOption<int>("Buff.EmoteCommand", 3);
 
         // Enforce Min/Max Time
         if (BuffMessageTimer != 0)
@@ -109,10 +110,9 @@ class BufferAnnounce : public PlayerScript
 {
 
 public:
-
     BufferAnnounce() : PlayerScript("BufferAnnounce") {}
 
-    void OnLogin(Player* player)
+    void OnLogin(Player *player)
     {
         // Announce Module
         if (BFAnnounceModule)
@@ -126,10 +126,9 @@ class buff_npc : public CreatureScript
 {
 
 public:
+    buff_npc() : CreatureScript("buff_npc") {}
 
-    buff_npc() : CreatureScript("buff_npc") { }
-
-    static bool replace(std::string& str, const std::string& from, const std::string& to)
+    static bool replace(std::string &str, const std::string &from, const std::string &to)
     {
         size_t start_pos = str.find(from);
         if (start_pos == std::string::npos)
@@ -152,7 +151,7 @@ public:
             whisper = "ERROR! NPC Emote Text Not Found! Check the npc_buffer.conf!";
         }
 
-        std::string randMsg = sConfigMgr->GetStringDefault(whisper.c_str(), "");
+        std::string randMsg = sConfigMgr->GetOption<std::string>(whisper.c_str(), "");
         replace(randMsg, "%s", Name);
         return randMsg.c_str();
     }
@@ -171,7 +170,7 @@ public:
             phrase = "ERROR! NPC Emote Text Not Found! Check the npc_buffer.conf!";
         }
 
-        std::string randMsg = sConfigMgr->GetStringDefault(phrase.c_str(), "");
+        std::string randMsg = sConfigMgr->GetOption<std::string>(phrase.c_str(), "");
         return randMsg.c_str();
     }
 
@@ -184,7 +183,7 @@ public:
 
         // Store Buff IDs
         std::vector<uint32> vecBuffs;
-        std::stringstream ss(sConfigMgr->GetStringDefault("Buff.Spells", ""));
+        std::stringstream ss(sConfigMgr->GetOption<std::string>("Buff.Spells", ""));
         for (std::string buff; std::getline(ss, buff, ';');)
         {
             vecBuffs.push_back(stoul(buff));
@@ -206,83 +205,83 @@ public:
             if (PlayerLevel < 10)
             {
                 // Dish out the buffs
-                player->CastSpell(player, 21562, true);     // Prayer of Fortitude (Rank 1)
-                player->CastSpell(player, 1126, true);      // Mark of the Wild (Rank 1)
-                player->CastSpell(player, 27683, true);     // Prayer of Shadow Protection (Rank 1)
+                player->CastSpell(player, 21562, true); // Prayer of Fortitude (Rank 1)
+                player->CastSpell(player, 1126, true);  // Mark of the Wild (Rank 1)
+                player->CastSpell(player, 27683, true); // Prayer of Shadow Protection (Rank 1)
 
             } // 1-9
             else if (PlayerLevel >= 10 && PlayerLevel < 20)
             {
-                player->CastSpell(player, 21562, true);     // Prayer of Fortitude (Rank 1)
-                player->CastSpell(player, 1126, true);      // Mark of the Wild (Rank 1)
-                player->CastSpell(player, 27683, true);     // Prayer of Shadow Protection (Rank 1)
+                player->CastSpell(player, 21562, true); // Prayer of Fortitude (Rank 1)
+                player->CastSpell(player, 1126, true);  // Mark of the Wild (Rank 1)
+                player->CastSpell(player, 27683, true); // Prayer of Shadow Protection (Rank 1)
 
             } // 10-19
             else if (PlayerLevel >= 20 && PlayerLevel < 30)
             {
-                player->CastSpell(player, 21562, true);     // Prayer of Fortitude (Rank 1)
-                player->CastSpell(player, 1126, true);      // Mark of the Wild (Rank 1)
-                player->CastSpell(player, 27683, true);     // Prayer of Shadow Protection (Rank 1)
-                player->CastSpell(player, 13326, true);     // Arcane Intellect (Rank 1)
+                player->CastSpell(player, 21562, true); // Prayer of Fortitude (Rank 1)
+                player->CastSpell(player, 1126, true);  // Mark of the Wild (Rank 1)
+                player->CastSpell(player, 27683, true); // Prayer of Shadow Protection (Rank 1)
+                player->CastSpell(player, 13326, true); // Arcane Intellect (Rank 1)
 
             } // 20-29
             else if (PlayerLevel >= 30 && PlayerLevel < 40)
             {
                 player->CastSpell(player, 21562, true); // Prayer of Fortitude (Rank 1)
-                player->CastSpell(player, 25898, true);  // Greater Blessing of Kings (Rank 1)
+                player->CastSpell(player, 25898, true); // Greater Blessing of Kings (Rank 1)
                 player->CastSpell(player, 1126, true);  // Mark of the Wild (Rank 1)
                 player->CastSpell(player, 27681, true); // Prayer of Spirit (Rank 1)
-                player->CastSpell(player, 27683, true);  // Prayer of Shadow Protection (Rank 1)
-                player->CastSpell(player, 13326, true);  // Arcane Intellect (Rank 1)
+                player->CastSpell(player, 27683, true); // Prayer of Shadow Protection (Rank 1)
+                player->CastSpell(player, 13326, true); // Arcane Intellect (Rank 1)
 
             } // 30-39
             else if (PlayerLevel >= 40 && PlayerLevel < 50)
             {
-                player->CastSpell(player, 21562, true); // Prayer of Fortitude (Rank 1)
-                player->CastSpell(player, vecBuffs[3], true); //Mark of the Wild(48469)
-                player->CastSpell(player, 27681, true); // Prayer of Spirit (Rank 1)
-                player->CastSpell(player, vecBuffs[5], true); //Prayer of Shadow Protection(48170)
-                player->CastSpell(player, 13326, true);  // Arcane Intellect (Rank 1)
+                player->CastSpell(player, 21562, true);       // Prayer of Fortitude (Rank 1)
+                player->CastSpell(player, vecBuffs[3], true); // Mark of the Wild(48469)
+                player->CastSpell(player, 27681, true);       // Prayer of Spirit (Rank 1)
+                player->CastSpell(player, vecBuffs[5], true); // Prayer of Shadow Protection(48170)
+                player->CastSpell(player, 13326, true);       // Arcane Intellect (Rank 1)
 
             } // 40-49
             else if (PlayerLevel >= 50 && PlayerLevel < 60)
             {
-                player->CastSpell(player, vecBuffs[1], true); //Prayer of Fortitude(48162)
-                player->CastSpell(player, vecBuffs[2], true); //Greater Blessing of Kings(43223)
-                player->CastSpell(player, vecBuffs[3], true); //Mark of the Wild(48469)
-                player->CastSpell(player, vecBuffs[4], true); //Prayer of Spirit(48074)
-                player->CastSpell(player, vecBuffs[5], true); //Prayer of Shadow Protection(48170)
-                player->CastSpell(player, vecBuffs[6], true); //Arcane Intellect(36880)
+                player->CastSpell(player, vecBuffs[1], true); // Prayer of Fortitude(48162)
+                player->CastSpell(player, vecBuffs[2], true); // Greater Blessing of Kings(43223)
+                player->CastSpell(player, vecBuffs[3], true); // Mark of the Wild(48469)
+                player->CastSpell(player, vecBuffs[4], true); // Prayer of Spirit(48074)
+                player->CastSpell(player, vecBuffs[5], true); // Prayer of Shadow Protection(48170)
+                player->CastSpell(player, vecBuffs[6], true); // Arcane Intellect(36880)
 
             } // 50-59
             else if (PlayerLevel >= 60 && PlayerLevel < 70)
             {
-                player->CastSpell(player, vecBuffs[1], true); //Prayer of Fortitude(48162)
-                player->CastSpell(player, vecBuffs[2], true); //Greater Blessing of Kings(43223)
-                player->CastSpell(player, vecBuffs[3], true); //Mark of the Wild(48469)
-                player->CastSpell(player, vecBuffs[4], true); //Prayer of Spirit(48074)
-                player->CastSpell(player, vecBuffs[5], true); //Prayer of Shadow Protection(48170)
-                player->CastSpell(player, vecBuffs[6], true); //Arcane Intellect(36880)
+                player->CastSpell(player, vecBuffs[1], true); // Prayer of Fortitude(48162)
+                player->CastSpell(player, vecBuffs[2], true); // Greater Blessing of Kings(43223)
+                player->CastSpell(player, vecBuffs[3], true); // Mark of the Wild(48469)
+                player->CastSpell(player, vecBuffs[4], true); // Prayer of Spirit(48074)
+                player->CastSpell(player, vecBuffs[5], true); // Prayer of Shadow Protection(48170)
+                player->CastSpell(player, vecBuffs[6], true); // Arcane Intellect(36880)
 
             } // 60-69
             else if (PlayerLevel >= 70 && PlayerLevel < 80)
             {
-                player->CastSpell(player, vecBuffs[1], true); //Prayer of Fortitude(48162)
-                player->CastSpell(player, vecBuffs[2], true); //Greater Blessing of Kings(43223)
-                player->CastSpell(player, vecBuffs[3], true); //Mark of the Wild(48469)
-                player->CastSpell(player, vecBuffs[4], true); //Prayer of Spirit(48074)
-                player->CastSpell(player, vecBuffs[5], true); //Prayer of Shadow Protection(48170)
-                player->CastSpell(player, vecBuffs[6], true); //Arcane Intellect(36880)
+                player->CastSpell(player, vecBuffs[1], true); // Prayer of Fortitude(48162)
+                player->CastSpell(player, vecBuffs[2], true); // Greater Blessing of Kings(43223)
+                player->CastSpell(player, vecBuffs[3], true); // Mark of the Wild(48469)
+                player->CastSpell(player, vecBuffs[4], true); // Prayer of Spirit(48074)
+                player->CastSpell(player, vecBuffs[5], true); // Prayer of Shadow Protection(48170)
+                player->CastSpell(player, vecBuffs[6], true); // Arcane Intellect(36880)
 
             } // 70-79
             else
             {
-                player->CastSpell(player, vecBuffs[1], true); //Prayer of Fortitude(48162)
-                player->CastSpell(player, vecBuffs[2], true); //Greater Blessing of Kings(43223)
-                player->CastSpell(player, vecBuffs[3], true); //Mark of the Wild(48469)
-                player->CastSpell(player, vecBuffs[4], true); //Prayer of Spirit(48074)
-                player->CastSpell(player, vecBuffs[5], true); //Prayer of Shadow Protection(48170)
-                player->CastSpell(player, vecBuffs[6], true); //Arcane Intellect(36880)
+                player->CastSpell(player, vecBuffs[1], true); // Prayer of Fortitude(48162)
+                player->CastSpell(player, vecBuffs[2], true); // Greater Blessing of Kings(43223)
+                player->CastSpell(player, vecBuffs[3], true); // Mark of the Wild(48469)
+                player->CastSpell(player, vecBuffs[4], true); // Prayer of Spirit(48074)
+                player->CastSpell(player, vecBuffs[5], true); // Prayer of Shadow Protection(48170)
+                player->CastSpell(player, vecBuffs[6], true); // Arcane Intellect(36880)
 
             } // LEVEL 80
         }
@@ -308,7 +307,7 @@ public:
     // Passive Emotes
     struct NPC_PassiveAI : public ScriptedAI
     {
-        NPC_PassiveAI(Creature * creature) : ScriptedAI(creature) { }
+        NPC_PassiveAI(Creature *creature) : ScriptedAI(creature) {}
 
         uint32 MessageTimer;
 
@@ -340,12 +339,15 @@ public:
 
                 MessageTimer = urand(BuffMessageTimer, 300000);
             }
-            else { MessageTimer -= diff; }
+            else
+            {
+                MessageTimer -= diff;
+            }
         }
     };
 
     // CREATURE AI
-    CreatureAI * GetAI(Creature * creature) const
+    CreatureAI *GetAI(Creature *creature) const
     {
         return new NPC_PassiveAI(creature);
     }
