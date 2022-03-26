@@ -16,7 +16,7 @@ SET
 @MinLevel 	:= 80,
 @MaxLevel 	:= 80,
 @Faction 	:= 35,
-@NPCFlag 	:= 81,
+@NPCFlag 	:= 80,
 @Scale		:= 1.0,
 @Rank		:= 0,
 @Type 		:= 7,
