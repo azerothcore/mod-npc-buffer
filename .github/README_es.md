@@ -9,6 +9,8 @@
 _Este módulo fue creado para [StygianCore](https://rebrand.ly/stygiancoreproject). Un repack de World of Warcraft 3.3.5a Solo/LAN por StygianTheBest | [GitHub](https://rebrand.ly/stygiangithub) | [Sitio web](https://rebrand.ly/stygianthebest))_.
 Este módulo ha sido portado a AzerothCore por gtao725 (https://github.com/gtao725/)._
 
+[English](README.md) | [Español](README_ES.md)
+
 ### Descripción
 
 Se trata de un PNJ de buffing de un solo clic que buffeará al jugador con un conjunto específico de hechizos. El NPC también puede buffear a todos por igual o por nivel de jugador. Habla una frase aleatoria configurable después de cada uso y también puede atraer al jugador usando opciones de emote configurables.
