@@ -16,7 +16,7 @@ SET
 @MinLevel 	:= 80,
 @MaxLevel 	:= 80,
 @Faction 	:= 35,
-@NPCFlag 	:= 81,
+@NPCFlag 	:= 80,
 @Scale		:= 1.0,
 @Rank		:= 0,
 @Type 		:= 7,
@@ -33,3 +33,8 @@ INSERT INTO creature_template (`entry`, `modelid1`, `name`, `subname`, `IconName
 -- NPC EQUIPPED
 DELETE FROM `creature_equip_template` WHERE `CreatureID`=@Entry AND `ID`=1;
 INSERT INTO `creature_equip_template` VALUES (@Entry, 1, 1906, 0, 0, 18019); -- War Axe(14824), Torch
+
+-- creatture_template_movement
+DELETE FROM `creature_template_movement` WHERE `CreatureId` IN (@Entry);
+INSERT INTO `creature_template_movement` (`CreatureId`, `Ground`, `Swim`, `Flight`, `Rooted`, `Chase`, `Random`, `InteractionPauseTimer`) VALUES
+(@Entry, 1, 1, 0, 0, 0, 0, NULL);
