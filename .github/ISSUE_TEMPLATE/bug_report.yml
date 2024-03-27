@@ -4,8 +4,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for taking the time to fill out a bug report. Remember to fill out all fields including the title above. 
-        An issue that is not properly filled out will be closed. 
+        Thank you for taking the time to fill out a bug report. Remember to fill out all fields including the title above.
+        An issue that is not properly filled out will be closed.
         You can read more about the standards for a bug report [here](https://www.azerothcore.org/wiki/issue-tracker-standards).
   - type: textarea
     id: current
@@ -15,6 +15,7 @@ body:
         Description of the problem or issue here.
         Include entries of affected creatures / items / quests / spells etc.
         If this is a crash, post the crashlog (upload to https://gist.github.com/) and include the link here.
+        Never upload files! Use GIST for text and YouTube for videos!
     validations:
       required: true
   - type: textarea
@@ -25,14 +26,6 @@ body:
         Tell us what should happen instead.
     validations:
       required: true
-  - type: textarea
-    id: source
-    attributes:
-      label: Source
-      description: |
-        If you have a source that proves how it is supposed to work, please add that to make it easier for devs to fix the issue.
-    validations:
-      required: false
   - type: textarea
     id: reproduce
     attributes:
@@ -68,7 +61,8 @@ body:
     attributes:
       label: Operating system
       description: |
-        Operating System, i.e. Windows 10 x64, Debian 10 x64, etc
+        The Operating System the Server is running on.
+        i.e. Windows 11 x64, Debian 10 x64, macOS 12, Ubuntu 20.04
     validations:
       required: true
   - type: textarea

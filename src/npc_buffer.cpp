@@ -70,6 +70,7 @@ This code and content is released under the [GNU AGPL v3](https://github.com/aze
 #include "ScriptedCreature.h"
 #include "ScriptedGossip.h"
 
+static bool BFEnableModule;
 static bool BFAnnounceModule;
 static bool BuffByLevel;
 static bool BuffCureRes;
@@ -86,14 +87,15 @@ public:
 
     void OnBeforeConfigLoad(bool /*reload*/) override
     {
+        BFEnableModule = sConfigMgr->GetOption<bool>("Buff.Enable", 1);
         BFAnnounceModule = sConfigMgr->GetOption<bool>("Buff.Announce", 1);
         BuffByLevel = sConfigMgr->GetOption<bool>("Buff.ByLevel", 1);
         BuffCureRes = sConfigMgr->GetOption<bool>("Buff.CureRes", 1);
-        BuffNumPhrases = sConfigMgr->GetOption<int>("Buff.NumPhrases", 3);
-        BuffNumWhispers = sConfigMgr->GetOption<int>("Buff.NumWhispers", 3);
-        BuffMessageTimer = sConfigMgr->GetOption<int>("Buff.MessageTimer", 60000);
-        BuffEmoteSpell = sConfigMgr->GetOption<int>("Buff.EmoteSpell", 44940);
-        BuffEmoteCommand = sConfigMgr->GetOption<int>("Buff.EmoteCommand", 3);
+        BuffNumPhrases = sConfigMgr->GetOption<uint32>("Buff.NumPhrases", 3);
+        BuffNumWhispers = sConfigMgr->GetOption<uint32>("Buff.NumWhispers", 3);
+        BuffMessageTimer = sConfigMgr->GetOption<uint32>("Buff.MessageTimer", 60000);
+        BuffEmoteSpell = sConfigMgr->GetOption<uint32>("Buff.EmoteSpell", 44940);
+        BuffEmoteCommand = sConfigMgr->GetOption<uint32>("Buff.EmoteCommand", 3);
 
         // Enforce Min/Max Time
         if (BuffMessageTimer != 0)
@@ -108,14 +110,13 @@ public:
 
 class BufferAnnounce : public PlayerScript
 {
-
 public:
     BufferAnnounce() : PlayerScript("BufferAnnounce") {}
 
     void OnLogin(Player *player)
     {
         // Announce Module
-        if (BFAnnounceModule)
+        if (BFEnableModule && BFAnnounceModule)
         {
             ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00BufferNPC |rmodule.");
         }
@@ -124,7 +125,6 @@ public:
 
 class buff_npc : public CreatureScript
 {
-
 public:
     buff_npc() : CreatureScript("buff_npc") {}
 
@@ -176,6 +176,11 @@ public:
 
     bool OnGossipSelect(Player *player, Creature *creature, uint32 /*uiSender*/, uint32 /* uiAction */)
     {
+        if (!BFEnableModule)
+        {
+            return false;
+        }
+
         // Who are we dealing with?
         std::string CreatureWhisper = "Init";
         std::string PlayerName = player->GetName();
@@ -296,7 +301,11 @@ public:
 
         // Choose and speak a random phrase to the player
         // Phrases are stored in the config file
-        creature->Whisper(PickWhisper(PlayerName).c_str(), LANG_UNIVERSAL, player);
+
+        if (BuffNumWhispers > 0)
+        {
+            creature->Whisper(PickWhisper(PlayerName).c_str(), LANG_UNIVERSAL, player);
+        }
 
         // Emote and Close
         creature->HandleEmoteCommand(EMOTE_ONESHOT_FLEX);
@@ -309,35 +318,44 @@ public:
     {
         NPC_PassiveAI(Creature *creature) : ScriptedAI(creature) {}
 
-        uint32 MessageTimer;
+        uint32 MessageTimer = 0;
 
         // Called once when client is loaded
         void Reset()
         {
-            MessageTimer = urand(BuffMessageTimer, 300000); // 1-5 minutes
+            if (BuffMessageTimer != 0) {
+                MessageTimer = urand(BuffMessageTimer, 300000); // 1-5 minutes
+            }
         }
 
         // Called at World update tick
         void UpdateAI(const uint32 diff)
         {
-            if (MessageTimer <= diff)
+            if (BFEnableModule && BuffMessageTimer != 0)
             {
-                std::string Message = PickPhrase();
-                me->Say(Message.c_str(), LANG_UNIVERSAL, NULL);
-
-                // Use gesture?
-                if (BuffEmoteCommand != 0)
+                if (MessageTimer <= diff)
                 {
-                    me->HandleEmoteCommand(BuffEmoteCommand);
-                }
+                    if (BuffNumPhrases > 0)
+                    {
+                        std::string Message = PickPhrase();
+                        me->Say(Message.c_str(), LANG_UNIVERSAL, NULL);
+                    }
 
-                // Alert players?
-                if (BuffEmoteSpell != 0)
-                {
-                    me->CastSpell(me, BuffEmoteSpell);
-                }
+                    // Use gesture?
+                    if (BuffEmoteCommand != 0)
+                    {
+                        me->HandleEmoteCommand(BuffEmoteCommand);
+                    }
 
-                MessageTimer = urand(BuffMessageTimer, 300000);
+                    // Alert players?
+                    if (BuffEmoteSpell != 0)
+                    {
+                        me->CastSpell(me, BuffEmoteSpell);
+                    }
+
+                    MessageTimer = urand(BuffMessageTimer, 300000);
+                }
+                else { MessageTimer -= diff; }
             }
             else
             {

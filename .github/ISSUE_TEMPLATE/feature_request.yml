@@ -6,8 +6,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for taking your time to fill out a feature request. Remember to fill out all fields including the title above. 
-        An issue that is not properly filled out will be closed. 
+        Thank you for taking your time to fill out a feature request. Remember to fill out all fields including the title above.
+        An issue that is not properly filled out will be closed.
   - type: textarea
     id: description
     attributes:

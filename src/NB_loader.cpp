@@ -1,5 +1,6 @@
 void AddNPCBufferScripts();
 
-void Addmod_npc_bufferScripts() {
+void Addmod_npc_bufferScripts()
+{
     AddNPCBufferScripts();
 }
