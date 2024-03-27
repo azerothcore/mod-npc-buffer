@@ -9,6 +9,8 @@
 _This module was created for [StygianCore](https://rebrand.ly/stygiancoreproject). A World of Warcraft 3.3.5a Solo/LAN repack by StygianTheBest | [GitHub](https://rebrand.ly/stygiangithub) | [Website](https://rebrand.ly/stygianthebest))_
 _This module has now being ported to AzerothCore by gtao725 (https://github.com/gtao725/)._
 
+[English](README.md) | [Español](README_ES.md)
+
 ### Description
 
 This is a one-click buffing NPC that will buff the player with a specific set of spells. The NPC can also buff
