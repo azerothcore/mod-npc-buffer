@@ -85,7 +85,8 @@ class BufferConfig : public WorldScript
 public:
     BufferConfig() : WorldScript("BufferConfig_conf") { }
 
-    void OnBeforeConfigLoad(bool /*reload*/) override {
+    void OnBeforeConfigLoad(bool /*reload*/) override
+    {
         BFEnableModule = sConfigMgr->GetOption<bool>("Buff.Enable", 1);
         BFAnnounceModule = sConfigMgr->GetOption<bool>("Buff.Announce", 1);
         BuffByLevel = sConfigMgr->GetOption<bool>("Buff.ByLevel", 1);
@@ -109,9 +110,7 @@ public:
 
 class BufferAnnounce : public PlayerScript
 {
-
 public:
-
     BufferAnnounce() : PlayerScript("BufferAnnounce") {}
 
     void OnLogin(Player* player)
@@ -126,9 +125,7 @@ public:
 
 class buff_npc : public CreatureScript
 {
-
 public:
-
     buff_npc() : CreatureScript("buff_npc") { }
 
     static bool replace(std::string& str, const std::string& from, const std::string& to)
