@@ -134,7 +134,8 @@ public:
     buff_npc() : CreatureScript("buff_npc") {}
 
     /** Get the most level-appropriate spell from the chain, 
-     * based on character level compared to max level (MaxLevel) */
+     * based on character level compared to max level (MaxLevel)
+     *  */
     static uint GetSpellForLevel(uint32 spell_id, Player *player)
     {
         uint32 level = player->getLevel();
@@ -235,7 +236,6 @@ public:
         // Who are we dealing with?
         std::string CreatureWhisper = "Init";
         std::string PlayerName = player->GetName();
-        std::vector<uint32> vecBuffChainSizes = {};
 
         // Store Buff IDs
         std::vector<uint32> vecBuffs = {};
