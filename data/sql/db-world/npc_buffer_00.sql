@@ -22,8 +22,11 @@ SET
 
 -- NPC
 DELETE FROM `creature_template` WHERE `entry`=@Entry;
-INSERT INTO `creature_template` (`entry`, `modelid1`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `unit_class`, `unit_flags`, `type`, `type_flags`, `RegenHealth`, `flags_extra`, `AiName`, `ScriptName`) VALUES
-(@Entry, @Model, @Name, @Title, @Icon, @GossipMenu, @MinLevel, @MaxLevel, @Faction, @NPCFlag, 1, 1.14286, @Scale, @Rank, 1, 2, @Type, @TypeFlags, 1, @FlagsExtra, @AIName, @Script);
+INSERT INTO `creature_template` (`entry`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `faction`, `npcflag`, `speed_walk`, `speed_run`, `scale`, `rank`, `unit_class`, `unit_flags`, `type`, `type_flags`, `RegenHealth`, `flags_extra`, `AiName`, `ScriptName`) VALUES
+(@Entry, @Name, @Title, @Icon, @GossipMenu, @MinLevel, @MaxLevel, @Faction, @NPCFlag, 1, 1.14286, @Scale, @Rank, 1, 2, @Type, @TypeFlags, 1, @FlagsExtra, @AIName, @Script);
+
+-- NPC MODEL 
+INSERT INTO `creature_template_model` (`CreatureID`, `Idx`, `CreatureDisplayID`, `DisplayScale`, `Probability`) VALUES (@Entry, 0, @Model, 1, 1);
 
 -- NPC EQUIPPED
 -- War Axe(14824), Torch
@@ -31,7 +34,7 @@ DELETE FROM `creature_equip_template` WHERE `CreatureID`=@Entry AND `ID`=1;
 INSERT INTO `creature_equip_template` VALUES
 (@Entry, 1, 1906, 0, 0, 18019);
 
--- creatture_template_movement
+-- creature_template_movement
 DELETE FROM `creature_template_movement` WHERE `CreatureId`=@Entry;
 INSERT INTO `creature_template_movement` (`CreatureId`, `Ground`, `Swim`, `Flight`, `Rooted`, `Chase`, `Random`, `InteractionPauseTimer`) VALUES
 (@Entry, 1, 1, 0, 0, 0, 0, NULL);

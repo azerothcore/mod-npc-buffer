@@ -45,9 +45,17 @@ Buff.CureRes = 1
 Buff.ByLevel = 1
 
 #
+#   Buff.MaxLevel
+#       Description: The highest character level at which buffs are scaled.
+#                    Characters at this level or higher receive the maximum
+#                    strength of buffs.
+#
+
+Buff.MaxLevel = 80
+
+#
 #   Buff.Spells
 #       Description: Buff Defaults (Leave blank to disable a buff)
-#                    This function is not active if Buff.ByLevel = 1
 #
 #       1. Prayer of Fortitude (48162)
 #       2. Greater Blessing of Kings (43223)
@@ -55,12 +63,13 @@ Buff.ByLevel = 1
 #       4. Prayer of Spirit (48074)
 #       5. Prayer of Shadow Protection (48170)
 #       6. Arcane Intellect (42995)
+#       7. Thorns (53307)
 #
 #       Fun Stuff
 #       48612 (Dalron the Controller)
 #
 
-Buff.Spells = "48162;43223;48469;48074;48170;42995;"
+Buff.Spells = "48162;43223;48469;48074;48170;42995;53307;"
 
 #
 #   Buff.MessageTimer
@@ -90,7 +99,6 @@ BF.P1 = "Come get buffed, taste my stuff, the elven females can't get enuff!"
 BF.P2 = "She never shook the stars from the swirling cosmos, but she loved good tauren and rode good kodos."
 BF.P3 = "Mr. Grubbs is the toughest grub around. No doubt about it."
 BF.P4 = "Those trolls sure now how to dance! I hear they like to party in the mountains of Darkshore."
-
 #
 #   Buff.NumWhispers
 #       Description: How many whispers does the NPC have?
@@ -116,6 +124,7 @@ BF.W7 = "Aye.. %s. Rumor has it there are two slaves in the cages of Blackrock D
 BF.W8 = "Indeed.. %s. The dwarves keep many secrets about that which lies beyond the deep recesses of their kingdoms."
 BF.W9 = "A little bit of this.. a dab of that.. ahh.. there we go %s."
 BF.W10 = "No %s, I never did hear if they found the children that disappeared from Nagrand and Zangarmarsh."
+
 
 #
 #   Buff.EmoteSpell
