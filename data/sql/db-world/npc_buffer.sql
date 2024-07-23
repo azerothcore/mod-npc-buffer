@@ -3,7 +3,7 @@
 -- --------------------------------------------------------------------------------------
 -- Information
 -- Creature ID: 601016,
---Creature Model 14612, -- Tauren Warmaster
+-- Creature Model: 14612 -- Tauren Warmaster
 -- Name: Buffmaster Hasselhoof
 
 DELETE FROM `creature_template` WHERE (`entry` = 601016);
