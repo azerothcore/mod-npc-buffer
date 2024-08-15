@@ -138,7 +138,7 @@ public:
      *  */
     static uint GetSpellForLevel(uint32 spell_id, Player *player)
     {
-        uint32 level = player->getLevel();
+        uint32 level = player->GetLevel();
 
         // if the character is level max level or higher, return the last spell in the chain
         if (level >= MaxLevel)
