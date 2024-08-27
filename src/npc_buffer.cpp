@@ -131,7 +131,7 @@ public:
 class buff_npc : public CreatureScript
 {
 public:
-    buff_npc() : CreatureScript("buff_npc") {}
+    buff_npc() : CreatureScript("buff_npc") { }
 
     /** Get the most level-appropriate spell from the chain, 
      * based on character level compared to max level (MaxLevel)
@@ -226,7 +226,8 @@ public:
         return randMsg.c_str();
     }
 
-    bool OnGossipSelect(Player* player, Creature* creature, uint32 /*uiSender*/, uint32 /* uiAction */)
+    // bool OnGossipSelect(Player* player, Creature* creature, uint32 /*uiSender*/, uint32 /* uiAction */) override
+    bool OnGossipHello(Player* player, Creature* creature)
     {
         if (!BFEnableModule)
         {
