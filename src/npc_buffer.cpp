@@ -70,6 +70,7 @@ This code and content is released under the [GNU AGPL v3](https://github.com/aze
 #include "Player.h"
 #include "ScriptedCreature.h"
 #include "ScriptedGossip.h"
+#include "SpellMgr.h"
 #include "Log.h"
 
 static bool BFEnableModule;
