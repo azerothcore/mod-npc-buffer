@@ -137,7 +137,7 @@ public:
     /** Get the most level-appropriate spell from the chain, 
      * based on character level compared to max level (MaxLevel)
      *  */
-    static uint GetSpellForLevel(uint32 spell_id, Player *player)
+    static uint32 GetSpellForLevel(uint32 spell_id, Player *player)
     {
         uint32 level = player->GetLevel();
 
