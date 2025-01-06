@@ -4,7 +4,7 @@
 
 - Latest build status with azerothcore:
 
-[![Build Status](https://github.com/azerothcore/mod-npc-buffer/workflows/core-build/badge.svg)](https://github.com/azerothcore/mod-npc-buffer)
+[![Build Status](https://github.com/azerothcore/mod-npc-buffer/workflows/core-build.yml/badge.svg)](https://github.com/azerothcore/mod-npc-buffer/workflows/core-build.yml)
 
 _This module was created for [StygianCore](https://rebrand.ly/stygiancoreproject). A World of Warcraft 3.3.5a Solo/LAN repack by StygianTheBest | [GitHub](https://rebrand.ly/stygiangithub) | [Website](https://rebrand.ly/stygianthebest))_
 _This module has now being ported to AzerothCore by gtao725 (https://github.com/gtao725/)._
