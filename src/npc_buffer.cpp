@@ -64,14 +64,14 @@ This code and content is released under the [GNU AGPL v3](https://github.com/aze
 
 */
 
-#include "Config.h"
-#include "ScriptMgr.h"
 #include "Chat.h"
+#include "Config.h"
+#include "Log.h"
 #include "Player.h"
 #include "ScriptedCreature.h"
 #include "ScriptedGossip.h"
+#include "ScriptMgr.h"
 #include "SpellMgr.h"
-#include "Log.h"
 
 static bool BFEnableModule;
 static bool BFAnnounceModule;
@@ -87,7 +87,9 @@ static uint32 MaxLevel = 80;
 class BufferConfig : public WorldScript
 {
 public:
-    BufferConfig() : WorldScript("BufferConfig_conf") {}
+    BufferConfig() : WorldScript("BufferConfig_conf", {
+        WORLDHOOK_ON_BEFORE_CONFIG_LOAD
+    }) {}
 
     void OnBeforeConfigLoad(bool /*reload*/) override
     {
@@ -107,9 +109,7 @@ public:
         if (BuffMessageTimer != 0)
         {
             if (BuffMessageTimer < 60000 || BuffMessageTimer > 300000)
-            {
                 BuffMessageTimer = 60000;
-            }
         }
     }
 };
@@ -117,15 +117,15 @@ public:
 class BufferAnnounce : public PlayerScript
 {
 public:
-    BufferAnnounce() : PlayerScript("BufferAnnounce") {}
+    BufferAnnounce() : PlayerScript("BufferAnnounce", {
+        PLAYERHOOK_ON_LOGIN
+    }) {}
 
-    void OnLogin(Player *player)
+    void OnPlayerLogin(Player *player)
     {
         // Announce Module
         if (BFEnableModule && BFAnnounceModule)
-        {
             ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00BufferNPC |rmodule.");
-        }
     }
 };
 
@@ -143,17 +143,13 @@ public:
 
         // if the character is level max level or higher, return the last spell in the chain
         if (level >= MaxLevel)
-        {
             return sSpellMgr->GetLastSpellInChain(spell_id);
-        }
 
         uint32 first_spell = sSpellMgr->GetFirstSpellInChain(spell_id);
         uint32 next_spell = first_spell;
         uint32 number_of_spells_in_chain = 0;
         for (; next_spell; next_spell = sSpellMgr->GetNextSpellInChain(next_spell))
-        {
             number_of_spells_in_chain++;
-        }
 
         // if the chain is empty, return the first spell
         if (number_of_spells_in_chain == 0)
@@ -164,9 +160,7 @@ public:
 
         // if the chain has only one spell, return that spell
         if (number_of_spells_in_chain == 1)
-        {
             return first_spell;
-        }
 
         // if the chain has more than one spell, calculate the level-appropriate spell
         uint32 spell_index = (level * number_of_spells_in_chain) / MaxLevel;
@@ -200,9 +194,7 @@ public:
 
         // Sanitize
         if (whisper == "")
-        {
             whisper = "ERROR! NPC Emote Text Not Found! Check the npc_buffer.conf!";
-        }
 
         std::string randMsg = sConfigMgr->GetOption<std::string>(whisper.c_str(), "");
         replace(randMsg, "%s", Name);
@@ -219,9 +211,7 @@ public:
 
         // Sanitize
         if (phrase == "")
-        {
             phrase = "ERROR! NPC Emote Text Not Found! Check the npc_buffer.conf!";
-        }
 
         std::string randMsg = sConfigMgr->GetOption<std::string>(phrase.c_str(), "");
         return randMsg.c_str();
@@ -231,9 +221,7 @@ public:
     bool OnGossipHello(Player* player, Creature* creature)
     {
         if (!BFEnableModule)
-        {
             return false;
-        }
 
         // Who are we dealing with?
         std::string CreatureWhisper = "Init";
@@ -243,9 +231,7 @@ public:
         std::vector<uint32> vecBuffs = {};
         std::stringstream ss(sConfigMgr->GetOption<std::string>("Buff.Spells", ""));
         for (std::string buff; std::getline(ss, buff, ';');)
-        {
             vecBuffs.push_back(stoul(buff));
-        }
 
         // Cure Resurrection Sickness
         if (BuffCureRes && player->HasAura(15007))
@@ -270,17 +256,13 @@ public:
         {
             // No level requirement, so buff with max level default buffs
             for (std::vector<uint32>::const_iterator itr = vecBuffs.begin(); itr != vecBuffs.end(); itr++)
-            {
                 player->CastSpell(player, *itr, true);
-            }
         }
 
         // Choose and speak a random phrase to the player
         // Phrases are stored in the config file
         if (BuffNumWhispers > 0)
-        {
             creature->Whisper(PickWhisper(PlayerName).c_str(), LANG_UNIVERSAL, player);
-        }
 
         // Emote and Close
         creature->HandleEmoteCommand(EMOTE_ONESHOT_FLEX);
@@ -298,9 +280,8 @@ public:
         // Called once when client is loaded
         void Reset()
         {
-            if (BuffMessageTimer != 0) {
+            if (BuffMessageTimer != 0)
                 MessageTimer = urand(BuffMessageTimer, 300000); // 1-5 minutes
-            }
         }
 
         // Called at World update tick
@@ -318,24 +299,18 @@ public:
 
                     // Use gesture?
                     if (BuffEmoteCommand != 0)
-                    {
                         me->HandleEmoteCommand(BuffEmoteCommand);
-                    }
 
                     // Alert players?
                     if (BuffEmoteSpell != 0)
-                    {
                         me->CastSpell(me, BuffEmoteSpell);
-                    }
 
                     MessageTimer = urand(BuffMessageTimer, 300000);
                 }
                 else { MessageTimer -= diff; }
             }
             else
-            {
                 MessageTimer -= diff;
-            }
         }
     };
 
